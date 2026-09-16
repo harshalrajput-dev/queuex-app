@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Login - QueueX Assistant Control Desk</title>
+  <meta name="description" content="Dedicated login for hospital staff (assistant, doctor, admin). Separate from the patient portal.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="qx-topbar">
+    <div class="qx-topbar-inner">
+      <a class="qx-brand" href="index.html">
+        <span class="qx-brand-badge">🏥</span>
+        <span class="qx-brand-text">QueueX <small>Hospital Staff Portal</small></span>
+      </a>
+      <div class="spacer"></div>
+      <nav class="qx-nav">
+        <a href="index.html">Home</a>
+        <a href="queue-display.html">Live Queue</a>
+        <a href="login.html">Patient Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" style="max-width:520px;">
+    <div class="qx-auth-card" style="margin-top:44px;">
+      <div class="qx-center qx-mb">
+        <div class="qx-brand-badge" style="width:64px;height:64px;font-size:30px;margin:0 auto;">🔐</div>
+        <h3 style="margin-top:14px;">Assistant Control Desk</h3>
+        <p class="qx-muted" style="margin-bottom:0;">Staff-only login for the hospital assistant control desk (assistant, doctor &amp; admin accounts).</p>
+      </div>
+      <div class="qx-alert qx-alert-danger qx-hide" id="staffError"></div>
+      <form id="staffLoginForm">
+        <div class="qx-field">
+          <label for="staffIdentifier">Email or Mobile Number</label>
+          <input type="text" id="staffIdentifier" placeholder="assistant@queueex.test or 9999999901" required>
+        </div>
+        <div class="qx-field">
+          <label for="staffPassword">Password</label>
+          <div class="qx-flex">
+            <input type="password" id="staffPassword" placeholder="Enter password" required style="flex:1;">
+            <button type="button" class="qx-btn qx-btn-outline qx-btn-sm" id="toggleStaffShow" style="flex:0 0 auto;">Show</button>
+          </div>
+        </div>
+        <button type="submit" class="qx-btn qx-btn-success w100 qx-mt">Login to Assistant Desk</button>
+      </form>
+      <p class="qx-muted qx-center qx-mt">
+        Patient account? <a href="login.html">Use the Patient Login</a>
+      </p>
+      <div class="qx-subcard qx-mt" style="text-align:center;">
+        <span class="est-banner" style="margin:0;">Dev test account: <strong>assistant@queueex.test</strong> / Assistant@123</span>
+      </div>
+    </div>
+  </main>
+
+  <footer class="qx-footer">
+    <div class="qx-footer-grid container">
+      <div class="qx-footer-col qx-footer-brand">
+        <a class="qx-brand" href="index.html">
+          <span class="qx-brand-badge">🏥</span>
+          <span class="qx-brand-text">QueueX<small>New Civil Hospital, Surat</small></span>
+        </a>
+        <p>Prototype for public hospital digital queue management. Not an official government system.</p>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Quick Links</h5>
+        <a href="index.html">Home</a>
+        <a href="index.html#doctors">Our Doctors</a>
+        <a href="index.html#departments">Departments</a>
+        <a href="queue-display.html">Live Queue Display</a>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Staff Support</h5>
+        <a href="assistant-login.html">Staff Login</a>
+        <a href="login.html">Patient Portal</a>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Contact</h5>
+        <div>New Civil Hospital, Surat</div>
+        <div>Majura Gate, Ring Road, Surat, Gujarat</div>
+        <div>OPD: 09:00 AM – 05:00 PM</div>
+        <div>Emergency: 24 × 7</div>
+      </div>
+    </div>
+    <div class="qx-footer-bottom">
+      <div class="qx-footer-bottom-inner container">
+        <span>© 2026 QueueX · Prototype for public hospital digital queue management</span>
+        <span>⚠️ Not for emergencies — contact the hospital emergency desk immediately</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/assistant-login.js"></script>
+</body>
+</html>

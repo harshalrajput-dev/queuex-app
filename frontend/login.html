@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Login &amp; Registration - QueueX</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="qx-topbar">
+    <div class="qx-topbar-inner">
+      <a class="qx-brand" href="index.html">
+        <span class="qx-brand-badge">🏥</span>
+        <span class="qx-brand-text">QueueX <small>New Civil Hospital, Surat</small></span>
+      </a>
+      <div class="spacer"></div>
+      <nav class="qx-nav">
+        <a href="index.html">Home</a>
+        <a href="index.html#doctors">Doctors</a>
+        <a href="queue-display.html">Live Queue</a>
+      </nav>
+      <div class="qx-nav-actions">
+        <a href="assistant-login.html" class="qx-btn qx-btn-sm qx-btn-glass">Staff Login</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="qx-auth-shell">
+      <div class="qx-auth-tabs">
+        <button class="qx-btn qx-btn-lg" id="tabLogin">Patient Login</button>
+        <button class="qx-btn qx-btn-lg qx-btn-success" id="tabRegister">New Patient Registration</button>
+      </div>
+
+      <!-- LOGIN VIEW -->
+      <div id="viewLogin" class="qx-auth-card">
+        <h3>Patient Secure Login</h3>
+        <p class="qx-muted">Login with your registered email <strong>or</strong> mobile number.</p>
+        <div class="qx-alert qx-alert-danger qx-hide" id="loginError"></div>
+        <form id="loginForm">
+          <div class="qx-field">
+            <label for="loginIdentifier">Email or Mobile Number</label>
+            <input type="text" id="loginIdentifier" placeholder="patient@gmail.com or 9876543210" required>
+          </div>
+          <div class="qx-field">
+            <label for="loginPassword">Password</label>
+            <div class="qx-flex">
+              <input type="password" id="loginPassword" placeholder="Enter password" required style="flex:1;">
+              <button type="button" class="qx-btn qx-btn-outline qx-btn-sm" id="toggleLoginShow" style="flex:0 0 auto;">Show</button>
+            </div>
+          </div>
+          <div class="qx-flex qx-wrap" style="justify-content:space-between;">
+            <label class="qx-check"><input type="checkbox" id="rememberMe"> Remember me</label>
+            <a href="#" id="forgotLink">Forgot password?</a>
+          </div>
+          <button type="submit" class="qx-btn w100 qx-mt">Login</button>
+          <p class="qx-muted qx-center qx-mt" style="margin-bottom:0;">Hospital staff? <a href="assistant-login.html">Login at the Staff Portal</a></p>
+        </form>
+      </div>
+
+      <!-- REGISTER VIEW -->
+      <div id="viewRegister" class="qx-auth-card qx-hide">
+        <h3>New Patient Registration</h3>
+        <p class="qx-muted">Complete registration from home. A token request is confirmed by the hospital assistant.</p>
+        <div class="qx-alert qx-alert-danger qx-hide" id="regError"></div>
+        <form id="registerForm">
+          <div class="qx-grid qx-grid-2">
+            <div class="qx-field"><label for="regName">Full Name *</label><input type="text" id="regName" required></div>
+            <div class="qx-field">
+              <label for="regDob">Date of Birth *</label>
+              <input type="date" id="regDob" required>
+              <div class="est-banner" id="regAge"></div>
+            </div>
+            <div class="qx-field">
+              <label for="regGender">Gender *</label>
+              <select id="regGender" required>
+                <option value="">Select</option>
+                <option>Male</option><option>Female</option><option>Other</option>
+              </select>
+            </div>
+            <div class="qx-field"><label for="regMobile">Mobile Number *</label><input type="tel" id="regMobile" required pattern="[0-9]{10}"></div>
+            <div class="qx-field"><label for="regEmail">Email *</label><input type="email" id="regEmail" required></div>
+            <div class="qx-field">
+              <label for="regBlood">Blood Group</label>
+              <select id="regBlood">
+                <option value="Unknown">Don't Know</option>
+                <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                <option>O+</option><option>O-</option><option>AB+</option><option>AB-</option>
+              </select>
+            </div>
+            <div class="qx-field"><label for="regAddress">Address</label><input type="text" id="regAddress" placeholder="House, street, area"></div>
+            <div class="qx-field"><label for="regCity">City</label><input type="text" id="regCity" placeholder="Surat"></div>
+            <div class="qx-field"><label for="regEmergency">Emergency Contact</label><input type="tel" id="regEmergency" placeholder="Family member mobile"></div>
+            <div class="qx-field">
+              <label for="regPassword">Password (min 8 chars) *</label>
+              <input type="password" id="regPassword" minlength="8" required>
+            </div>
+            <div class="qx-field">
+              <label for="regConfirm">Confirm Password *</label>
+              <input type="password" id="regConfirm" minlength="8" required>
+            </div>
+          </div>
+
+          <div class="qx-subcard qx-mt">
+            <h4>Profile Photo (identity)</h4>
+            <div class="qx-flex qx-wrap">
+              <input type="file" id="regPhoto" accept="image/*" style="flex:1;min-width:200px;">
+              <img id="photoPreview" alt="Photo preview" style="width:60px;height:60px;border-radius:50%;object-fit:cover;border:1px solid var(--qx-border);">
+            </div>
+          </div>
+
+          <div class="qx-subcard qx-mt">
+            <h4>Medical Information (optional but helpful)</h4>
+            <div class="qx-grid qx-grid-2">
+              <div class="qx-field">
+                <label>Blood Pressure</label>
+                <select id="regBP"><option>Normal</option><option>High BP</option><option>Low BP</option><option>None</option></select>
+              </div>
+              <div class="qx-field">
+                <label>Allergies</label>
+                <select id="regAllergies"><option value="No">No</option><option value="Yes">Yes</option></select>
+              </div>
+              <div class="qx-field">
+                <label>Past Surgeries</label>
+                <select id="regSurgeries"><option value="No">No</option><option value="Yes">Yes</option></select>
+              </div>
+              <div class="qx-field">
+                <label>Existing Diseases (multi-select)</label>
+                <div>
+                  <label class="qx-check"><input type="checkbox" class="cond" value="Diabetes"> Diabetes</label>
+                  <label class="qx-check"><input type="checkbox" class="cond" value="Asthma"> Asthma</label>
+                  <label class="qx-check"><input type="checkbox" class="cond" value="Heart Problem"> Heart</label>
+                  <label class="qx-check"><input type="checkbox" class="cond" value="Thyroid"> Thyroid</label>
+                </div>
+              </div>
+              <div class="qx-field">
+                <label>Smoking</label>
+                <select id="regSmoking"><option>No</option><option>Yes</option></select>
+              </div>
+              <div class="qx-field">
+                <label>Alcohol</label>
+                <select id="regAlcohol"><option>No</option><option>Yes</option></select>
+              </div>
+              <div class="qx-field">
+                <label>Current Medication</label>
+                <input type="text" id="regMedication" placeholder="Ongoing medicines, if any">
+              </div>
+              <div class="qx-field">
+                <label>How long is the current problem?</label>
+                <select id="regDuration"><option>Today</option><option>Few Days</option><option>1 Week</option><option>1 Month</option><option>More than 1 Month</option></select>
+              </div>
+            </div>
+            <div class="qx-field">
+              <label>Main problem / symptom (what brings you to hospital)</label>
+              <input type="text" id="regProblem" placeholder="e.g. fever, cough, chest pain">
+            </div>
+            <div class="qx-field">
+              <label>Severity</label>
+              <label class="qx-check"><input type="radio" name="severity" value="Mild" checked> Mild</label>
+              <label class="qx-check"><input type="radio" name="severity" value="Moderate"> Moderate</label>
+              <label class="qx-check"><input type="radio" name="severity" value="Severe"> Severe</label>
+            </div>
+            <div class="qx-field"><label>Other medical notes</label><textarea id="regNotes" rows="2"></textarea></div>
+          </div>
+
+          <button type="submit" class="qx-btn qx-btn-success w100 qx-mt">Register &amp; Proceed to Login</button>
+          <p class="qx-muted qx-center qx-mt">Already registered? <a href="#" id="regLoginLink">Login here</a></p>
+        </form>
+      </div>
+
+      <!-- FORGOT PASSWORD VIEW -->
+      <div id="viewForgot" class="qx-auth-card qx-hide">
+        <h3>Forgot Password</h3>
+        <p class="qx-muted">Enter your registered mobile or email. An OTP will be sent (development mode shows it on screen).</p>
+        <div class="qx-alert qx-alert-danger qx-hide" id="forgotError"></div>
+        <div class="qx-alert qx-alert-success qx-hide" id="forgotInfo"></div>
+        <form id="forgotForm">
+          <div class="qx-field">
+            <label>Registered Mobile or Email</label>
+            <input type="text" id="fgIdentifier" required>
+          </div>
+          <div class="qx-field qx-hide" id="fgOtpField">
+            <label>OTP</label>
+            <input type="text" id="fgOtp" required>
+          </div>
+          <div class="qx-field qx-hide" id="fgPassField">
+            <label>New Password</label>
+            <input type="password" id="fgNewPass" minlength="8" required>
+          </div>
+          <div class="qx-field qx-hide" id="fgConfirmField">
+            <label>Confirm New Password</label>
+            <input type="password" id="fgNewConfirm" minlength="8" required>
+          </div>
+          <button type="submit" class="qx-btn w100">Continue</button>
+        </form>
+        <p class="qx-muted qx-mt"><a href="#" id="backToLoginLink">Back to login</a></p>
+      </div>
+    </div>
+  </main>
+
+  <footer class="qx-footer">
+    <div class="qx-footer-grid container">
+      <div class="qx-footer-col qx-footer-brand">
+        <a class="qx-brand" href="index.html">
+          <span class="qx-brand-badge">🏥</span>
+          <span class="qx-brand-text">QueueX<small>New Civil Hospital, Surat</small></span>
+        </a>
+        <p>Prototype for public hospital digital queue management. Not an official government system.</p>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Quick Links</h5>
+        <a href="index.html">Home</a>
+        <a href="index.html#doctors">Our Doctors</a>
+        <a href="index.html#departments">Departments</a>
+        <a href="queue-display.html">Live Queue Display</a>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Patient Support</h5>
+        <a href="assistant-login.html">Staff Portal</a>
+        <a href="login.html">Patient Login</a>
+        <a href="login.html#register">New Registration</a>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Contact</h5>
+        <div>New Civil Hospital, Surat</div>
+        <div>Majura Gate, Ring Road, Surat, Gujarat</div>
+        <div>OPD: 09:00 AM – 05:00 PM</div>
+        <div>Emergency: 24 × 7</div>
+      </div>
+    </div>
+    <div class="qx-footer-bottom">
+      <div class="qx-footer-bottom-inner container">
+        <span>© 2026 QueueX · Prototype for public hospital digital queue management</span>
+        <span>⚠️ Not for emergencies — contact the hospital emergency desk immediately</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

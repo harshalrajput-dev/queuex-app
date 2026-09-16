@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Queue Display - New Civil Hospital Surat</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body {
+      background:
+        radial-gradient(1000px 520px at 90% -10%, rgba(34, 211, 238, 0.16), transparent 60%),
+        radial-gradient(880px 460px at -8% 18%, rgba(45, 212, 191, 0.14), transparent 55%),
+        radial-gradient(1200px 700px at 50% 120%, rgba(59, 130, 246, 0.22), transparent 62%),
+        linear-gradient(180deg, #0a1435 0%, #060b21 55%, #040818 100%);
+      background-attachment: fixed;
+      color: #dce7ff;
+      min-height: 100vh;
+    }
+    body::before { display: none; }
+    .board-header {
+      position: sticky; top: 0; z-index: 20;
+      background: rgba(6, 11, 33, 0.72);
+      -webkit-backdrop-filter: blur(18px) saturate(150%);
+      backdrop-filter: blur(18px) saturate(150%);
+      border-bottom: 1px solid rgba(141, 173, 240, 0.18);
+      box-shadow: 0 18px 44px -24px rgba(2, 6, 26, 0.9);
+      padding: 18px;
+    }
+    .board-header h1 { margin: 0; color: #fff; font-size: 26px; letter-spacing: -0.01em; }
+    .board-header .sub { color: #94a9cd; font-size: 13px; }
+    .dept-card {
+      background: linear-gradient(160deg, rgba(15, 30, 70, 0.78), rgba(10, 21, 51, 0.82));
+      -webkit-backdrop-filter: blur(16px) saturate(140%);
+      backdrop-filter: blur(16px) saturate(140%);
+      border: 1px solid rgba(141, 173, 240, 0.22);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: 0 20px 50px -20px rgba(2, 6, 23, 0.8), 0 0 34px -18px rgba(45, 212, 191, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .dept-card::before {
+      content: "";
+      position: absolute; top: 0; left: 22px; right: 22px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(45, 212, 191, 0.7), transparent);
+    }
+    .dept-title {
+      font-size: 15px; font-weight: 800; color: #67e8f9;
+      margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.8px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .dept-title::before { content: ""; width: 5px; height: 16px; border-radius: 3px; background: linear-gradient(180deg, #22d3ee, #3b82f6); box-shadow: 0 0 12px rgba(34, 211, 238, 0.6); }
+    .serving {
+      font-size: 40px; font-weight: 900; color: #fbbf24; margin: 4px 0;
+      text-shadow: 0 0 28px rgba(251, 191, 36, 0.45);
+      letter-spacing: -0.02em;
+    }
+    .label { font-size: 11px; color: #94a9cd; text-transform: uppercase; letter-spacing: 0.7px; font-weight: 700; }
+    .next-token { font-size: 26px; font-weight: 800; color: #4ade80; text-shadow: 0 0 22px rgba(74, 222, 128, 0.35); }
+    .meta { font-size: 13px; color: #cbd5e1; }
+    .meta strong { color: #f1f5f9; }
+    .badge-avail {
+      color: #4ade80; font-weight: 700; font-size: 12px;
+      background: rgba(74, 222, 128, 0.14); border: 1px solid rgba(74, 222, 128, 0.4);
+      padding: 2px 10px; border-radius: 999px;
+      box-shadow: 0 0 14px -4px rgba(74, 222, 128, 0.5);
+    }
+    .badge-unavail {
+      color: #f87171; font-weight: 700; font-size: 12px;
+      background: rgba(248, 113, 113, 0.14); border: 1px solid rgba(248, 113, 113, 0.4);
+      padding: 2px 10px; border-radius: 999px;
+    }
+    .clock {
+      font-size: 24px; font-weight: 800; color: #fff;
+      font-variant-numeric: tabular-nums;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(141, 173, 240, 0.25);
+      border-radius: 14px; padding: 7px 16px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 20px -8px rgba(45, 212, 191, 0.4);
+    }
+    #queueBoard a { color: #94a9cd; }
+    #queueBoard a:hover { color: #4ade80; }
+  </style>
+</head>
+<body>
+  <div class="board-header">
+    <div class="qx-flex" style="justify-content:space-between;max-width:1240px;margin:0 auto;">
+      <div style="text-align:left;">
+        <div class="qx-flex">
+          <span class="qx-brand-badge" style="width:52px;height:52px;font-size:26px;">🏥</span>
+          <div>
+            <h1>New Civil Hospital, Surat</h1>
+            <div class="sub">Live Queue Display · Tokens only · No patient names</div>
+          </div>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div class="clock" id="clock">--:--:--</div>
+        <div class="sub">Live · Real-time updates</div>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <div id="wardOccupancyBar" class="qx-ward-bar" style="max-width:1240px;margin:0 auto;padding:16px 22px 0;">
+      <div class="qx-ward-bar-inner">
+        <div class="qx-ward-bar-header">
+          <span>🛏️ Live Ward & Bed Occupancy</span>
+          <div class="qx-ward-bar-stats">
+            <span id="wardTotalBeds" class="qx-ward-stat">Total: --</span>
+            <span id="wardAvailBeds" class="qx-ward-stat qx-ward-stat-green">Available: --</span>
+            <span id="wardOccupiedBeds" class="qx-ward-stat qx-ward-stat-red">Occupied: --</span>
+            <span id="wardOccupancyRate" class="qx-ward-stat qx-ward-stat-yellow">Occupancy: --%</span>
+          </div>
+        </div>
+        <div id="wardCards" class="qx-ward-cards">
+          <div class="qx-ward-card"><div class="qx-spinner" style="margin:8px auto;"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="queueBoard" class="qx-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;padding:22px 0;">
+      <div class="qx-center"><div class="qx-spinner" style="margin:30px auto;"></div></div>
+    </div>
+    <div style="text-align:center;padding-bottom:24px;">
+      <a href="index.html">← Back to Home</a>
+    </div>
+  </main>
+
+  <script src="js/common.js"></script>
+  <script src="js/queue-display.js"></script>
+</body>
+</html>

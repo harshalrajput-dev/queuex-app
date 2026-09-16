@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Patient Dashboard - QueueX</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="qx-topbar">
+    <div class="qx-topbar-inner">
+      <a class="qx-brand" href="index.html">
+        <span class="qx-brand-badge">🏥</span>
+        <span class="qx-brand-text">QueueX <small>Patient Dashboard</small></span>
+      </a>
+      <div class="spacer"></div>
+      <div class="qx-nav-actions">
+        <a href="index.html" class="qx-btn qx-btn-outline qx-btn-sm">Home</a>
+        <button class="qx-btn qx-btn-warning qx-btn-sm" id="queueDisplayBtn">Live Queue</button>
+        <button class="qx-btn qx-btn-outline qx-btn-sm" id="notifBtn">🔔 Notifications <span id="notifBadge" class="qx-badge rejected qx-hide">0</span></button>
+        <span class="qx-nav-user"><img id="navAvatar" class="qx-avatar" alt=""><span id="navName"></span></span>
+        <button class="qx-btn qx-btn-sm" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="qx-grid qx-grid-dash">
+      <!-- LEFT: Profile + Notifications -->
+      <div>
+        <div class="qx-card qx-mb">
+          <div class="qx-center qx-mb">
+            <img id="profilePhoto" class="qx-avatar" style="width:90px;height:90px;font-size:36px;" alt="Profile photo">
+            <h3 id="profileName" style="margin-bottom:0;">Patient</h3>
+            <div class="qx-muted" id="profileRole">PATIENT</div>
+          </div>
+          <table class="qx-profile-table">
+            <tr><td class="qx-muted">Email</td><td id="profileEmail"></td></tr>
+            <tr><td class="qx-muted">Mobile</td><td id="profileMobile"></td></tr>
+            <tr><td class="qx-muted">Blood Group</td><td id="profileBlood"></td></tr>
+            <tr><td class="qx-muted">Age</td><td id="profileAge"></td></tr>
+            <tr><td class="qx-muted">City</td><td id="profileCity"></td></tr>
+          </table>
+          <a href="login.html" id="logoutLink" class="qx-btn qx-btn-danger qx-btn-sm w100 qx-mt">Logout</a>
+        </div>
+
+        <div class="qx-card qx-mb" id="sosCard">
+          <button type="button" class="qx-btn-sos w100" id="sosBtn">
+            <span class="sos-icon">🚨</span>
+            <span class="sos-text">Emergency SOS</span>
+          </button>
+          <div class="qx-sos-hint">Tap only for real medical emergencies</div>
+          <div class="qx-sos-cooldown-info qx-hide" id="sosCooldownInfo"></div>
+        </div>
+
+        <div class="qx-card qx-mb qx-hide" id="emergencyPassCard">
+          <div class="qx-emergency-pass-header">
+            <span>🚨</span>
+            <h4>Emergency Confirmed</h4>
+          </div>
+          <div id="emergencyPassContent"></div>
+        </div>
+
+        <div class="qx-card qx-hide" id="notifPanel">
+          <div class="qx-flex" style="justify-content:space-between;">
+            <h4>Notifications</h4>
+            <button class="qx-btn qx-btn-outline qx-btn-sm" id="markAllReadBtn">Mark all read</button>
+          </div>
+          <div id="notifList"></div>
+        </div>
+
+        <div class="qx-card qx-mb" id="familyMembersCard">
+          <div class="qx-flex" style="justify-content:space-between;margin-bottom:12px;">
+            <h4 style="margin:0;">👨‍👩‍👧 My Family Members</h4>
+            <button class="qx-btn qx-btn-outline qx-btn-sm" id="addFamilyMemberBtn">+ Add</button>
+          </div>
+          <div id="familyMembersList">
+            <div class="qx-muted" style="font-size:13px;">No family members added yet.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Token + Book + History -->
+      <div>
+        <div class="qx-card qx-mb" id="currentTokenCard">
+          <h3>My Current Token</h3>
+          <div id="currentTokenBox"><div class="qx-muted">No active token.</div></div>
+        </div>
+
+        <div class="qx-card qx-mb" id="bookTokenCard">
+          <h3>Book Token</h3>
+          <div class="qx-alert qx-alert-danger qx-hide" id="bookError"></div>
+          <div class="qx-grid qx-grid-2">
+            <div class="qx-field">
+              <label for="bkDepartment">Department</label>
+              <select id="bkDepartment"><option value="">Select department</option></select>
+            </div>
+            <div class="qx-field">
+              <label for="bkDate">Appointment Date</label>
+              <input type="date" id="bkDate">
+            </div>
+          </div>
+          <div class="qx-field">
+            <label for="bkBookingFor">Booking For</label>
+            <select id="bkBookingFor"><option value="self">Self</option></select>
+          </div>
+          <div id="doctorPicker" class="qx-grid qx-grid-3"></div>
+          <div class="qx-field qx-mt">
+            <label>Main symptom</label>
+            <input type="text" id="bkSymptom" placeholder="e.g. fever, cough, chest pain">
+          </div>
+          <div class="qx-field">
+            <label for="bkAddress">Home Address (for travel distance)</label>
+            <input type="text" id="bkAddress" list="suratAreas" placeholder="e.g. Adajan, Mota Varachha or full address, Surat">
+            <datalist id="suratAreas"></datalist>
+            <button type="button" class="qx-btn qx-btn-gps qx-btn-sm qx-mt" id="gpsBtn">
+              <span class="gps-icon">📍</span> Get Current Location
+              <span class="gps-spinner qx-hide" id="gpsSpinner"></span>
+            </button>
+            <div class="est-banner qx-mt" id="distancePreview" style="margin-bottom:0;"></div>
+          </div>
+          <div class="qx-hide qx-mt" id="routeEstimator">
+            <h4 style="margin-bottom:10px;">🚗 Routes to New Civil Hospital, Surat</h4>
+            <div id="routeCards"></div>
+          </div>
+          <div class="qx-grid qx-grid-2">
+            <div class="qx-field">
+              <label>Severity</label>
+              <select id="bkSeverity"><option>Mild</option><option>Moderate</option><option>Severe</option></select>
+            </div>
+            <div class="qx-field">
+              <label>Duration</label>
+              <select id="bkDuration"><option>Today</option><option>2-3 Days</option><option>1 Week</option><option>More than 1 Week</option></select>
+            </div>
+          </div>
+          <button class="qx-btn qx-btn-success w100" id="submitBookingBtn">Submit Booking Request</button>
+        </div>
+
+        <div class="qx-card qx-mb">
+          <h3>My Tokens &amp; History</h3>
+          <div class="qx-table-wrap">
+            <table class="qx-table">
+              <thead><tr><th>Token</th><th>Doctor / Dept</th><th>Date &amp; Slot</th><th>Distance</th><th>Status</th><th>Action</th></tr></thead>
+              <tbody id="tokensTable"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="qx-card qx-mb">
+          <h3>Medical History</h3>
+          <div id="medicalHistoryBox"><div class="qx-muted">No medical history recorded.</div></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="qx-footer">
+    <div class="qx-footer-grid container">
+      <div class="qx-footer-col qx-footer-brand">
+        <a class="qx-brand" href="index.html">
+          <span class="qx-brand-badge">🏥</span>
+          <span class="qx-brand-text">QueueX<small>New Civil Hospital, Surat</small></span>
+        </a>
+        <p>Prototype for public hospital digital queue management. Not an official government system.</p>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Quick Links</h5>
+        <a href="index.html">Home</a>
+        <a href="index.html#doctors">Our Doctors</a>
+        <a href="index.html#departments">Departments</a>
+        <a href="queue-display.html">Live Queue Display</a>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Support</h5>
+        <a href="login.html">Patient Login</a>
+        <a href="login.html#register">New Registration</a>
+        <a href="assistant-login.html">Staff Portal</a>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Contact</h5>
+        <div>New Civil Hospital, Surat</div>
+        <div>Majura Gate, Ring Road, Surat, Gujarat</div>
+        <div>OPD: 09:00 AM – 05:00 PM</div>
+        <div>Emergency: 24 × 7</div>
+      </div>
+    </div>
+    <div class="qx-footer-bottom">
+      <div class="qx-footer-bottom-inner container">
+        <span>© 2026 QueueX · Prototype for public hospital digital queue management</span>
+        <span>⚠️ Not for emergencies — contact the hospital emergency desk immediately</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="qx-modal-backdrop" id="modalBackdrop">
+    <div class="qx-modal" id="modalBody"></div>
+  </div>
+
+  <div class="qx-sos-backdrop qx-hide" id="sosBackdrop">
+    <div class="qx-sos-modal qx-sos-triage" id="sosModal">
+      <div class="qx-sos-modal-header">
+        <span class="qx-sos-modal-icon">🚨</span>
+        <h3 id="sosModalTitle">Emergency Triage</h3>
+      </div>
+      <div class="qx-sos-modal-body" id="sosModalBody">
+        <div class="qx-triage-form">
+          <div class="qx-triage-section">
+            <div class="qx-triage-section-title">Emergency For</div>
+            <div class="qx-field" style="margin-bottom:12px;">
+              <select id="triageBookingFor"><option value="self">Self</option></select>
+            </div>
+          </div>
+          <div class="qx-triage-section">
+            <div class="qx-triage-section-title">Severity Level *</div>
+            <div class="qx-triage-severity-options" id="triageSeverityOptions">
+              <label class="qx-triage-severity-option severity-moderate" data-severity="MODERATE">
+                <input type="radio" name="triageSeverity" value="MODERATE">
+                <div>
+                  <div class="qx-triage-severity-label">Moderate / Stable</div>
+                  <div class="qx-triage-severity-desc">Non-life-threatening, needs prompt attention</div>
+                </div>
+              </label>
+              <label class="qx-triage-severity-option severity-serious" data-severity="SERIOUS">
+                <input type="radio" name="triageSeverity" value="SERIOUS">
+                <div>
+                  <div class="qx-triage-severity-label">Serious / Urgent</div>
+                  <div class="qx-triage-severity-desc">Significant risk, requires urgent care</div>
+                </div>
+              </label>
+              <label class="qx-triage-severity-option severity-critical" data-severity="CRITICAL">
+                <input type="radio" name="triageSeverity" value="CRITICAL">
+                <div>
+                  <div class="qx-triage-severity-label">Critical / Severe</div>
+                  <div class="qx-triage-severity-desc">Life-threatening, immediate intervention needed</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <div class="qx-triage-section">
+            <div class="qx-triage-section-title">Your Location</div>
+            <div class="qx-triage-location-row">
+              <input type="text" id="triageAddress" placeholder="Custom address / location (optional)">
+              <button type="button" class="qx-triage-gps-btn" id="triageGpsBtn">
+                <span id="triageGpsIcon">📍</span> GPS
+              </button>
+            </div>
+            <div class="qx-triage-gps-status qx-hide" id="triageGpsStatus"></div>
+            <div class="qx-triage-preview qx-hide" id="triagePreview"></div>
+          </div>
+
+          <p style="font-size:11px;color:#64748b;margin:8px 0 0;">Hospital staff will be immediately alerted with your location and severity.</p>
+        </div>
+      </div>
+      <div class="qx-sos-modal-actions" id="sosModalActions">
+        <button class="qx-btn qx-btn-outline qx-btn-sm" id="sosCancelBtn">Cancel</button>
+        <button class="qx-btn qx-btn-danger qx-btn-sm" id="sosConfirmBtn">🚨 Send Emergency SOS</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/location.js"></script>
+  <script src="js/patient-dashboard.js"></script>
+</body>
+</html>

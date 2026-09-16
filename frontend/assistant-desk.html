@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assistant Control Desk - QueueX</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="qx-topbar">
+    <div class="qx-topbar-inner">
+      <a class="qx-brand" href="index.html">
+        <span class="qx-brand-badge">🏥</span>
+        <span class="qx-brand-text">QueueX <small>Hospital Assistant Control Desk</small></span>
+      </a>
+      <div class="spacer"></div>
+      <nav class="qx-nav">
+        <a href="queue-display.html">Live Queue</a>
+        <a href="index.html">Home</a>
+      </nav>
+      <div class="qx-nav-actions">
+        <span class="qx-nav-user"><img id="navAvatar" class="qx-avatar" alt=""><span id="navName"></span></span>
+        <button class="qx-btn qx-btn-sm" id="logoutBtn">Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="qx-emergency-banner qx-hide" id="emergencyBanner">
+      <div class="qx-emergency-banner-inner">
+        <div class="qx-emergency-banner-pulse"></div>
+        <div class="qx-emergency-banner-content">
+          <div class="qx-emergency-banner-header">
+            <span class="qx-emergency-banner-icon">🚨</span>
+            <strong>EMERGENCY SOS ALERT</strong>
+            <span class="qx-emergency-banner-severity qx-hide" id="emergencySeverityBadge"></span>
+          </div>
+          <div class="qx-emergency-banner-details" id="emergencyDetails"></div>
+          <div class="qx-emergency-banner-location qx-hide" id="emergencyLocationInfo"></div>
+        </div>
+        <div class="qx-emergency-banner-actions">
+          <button class="qx-btn qx-btn-danger qx-btn-sm qx-emergency-confirm-btn" id="confirmEmergencyBtn">✓ Confirm &amp; Assign Room</button>
+          <button class="qx-btn qx-btn-outline qx-btn-sm" id="dismissFalseAlarmBtn">Dismiss False Alarm</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="qx-flex qx-wrap" style="justify-content:space-between;margin-bottom:20px;">
+      <div>
+        <h2 style="margin:0;">Assistant Control Desk</h2>
+        <p class="qx-section-sub" style="margin:6px 0 0;">Real-time token management &amp; patient queue oversight</p>
+      </div>
+      <div class="qx-flex qx-wrap" style="gap:8px;">
+        <button class="qx-btn qx-btn-outline qx-btn-sm" id="analyticsToggleBtn">📊 Analytics</button>
+        <button class="qx-btn qx-btn-success qx-btn-sm" id="walkinBtn">+ Generate Walk-in Token</button>
+        <div class="est-banner" style="margin:0;">Last update: <span id="lastUpdated">-</span></div>
+      </div>
+    </div>
+
+    <div class="qx-live-stats-row qx-mb" id="liveStatsRow">
+      <div class="qx-live-stat">
+        <div class="qx-live-stat-icon" style="background:linear-gradient(140deg, rgba(59,130,246,0.18), rgba(96,165,250,0.18));border-color:rgba(59,130,246,0.35);">👥</div>
+        <div class="qx-live-stat-content">
+          <b id="liveActiveLogins">0</b>
+          <span>Active Logins</span>
+        </div>
+        <div class="qx-live-pulse"></div>
+      </div>
+      <div class="qx-live-stat">
+        <div class="qx-live-stat-icon" style="background:linear-gradient(140deg, rgba(245,158,11,0.18), rgba(251,191,36,0.18));border-color:rgba(245,158,11,0.35);">🎟️</div>
+        <div class="qx-live-stat-content">
+          <b id="liveTodayBookings">0</b>
+          <span>Today's Tokens</span>
+        </div>
+        <div class="qx-live-pulse"></div>
+      </div>
+      <div class="qx-live-stat">
+        <div class="qx-live-stat-icon" style="background:linear-gradient(140deg, rgba(16,185,129,0.18), rgba(52,211,153,0.18));border-color:rgba(16,185,129,0.35);">✅</div>
+        <div class="qx-live-stat-content">
+          <b id="liveCompletedToday">0</b>
+          <span>Completed Today</span>
+        </div>
+        <div class="qx-live-pulse"></div>
+      </div>
+      <div class="qx-live-stat">
+        <div class="qx-live-stat-icon" style="background:linear-gradient(140deg, rgba(239,68,68,0.18), rgba(248,113,113,0.18));border-color:rgba(239,68,68,0.35);">⏳</div>
+        <div class="qx-live-stat-content">
+          <b id="livePendingToday">0</b>
+          <span>Pending Today</span>
+        </div>
+        <div class="qx-live-pulse"></div>
+      </div>
+      <div class="qx-live-stat">
+        <div class="qx-live-stat-icon" style="background:linear-gradient(140deg, rgba(45,212,191,0.18), rgba(34,211,238,0.18));border-color:rgba(45,212,191,0.35);">📋</div>
+        <div class="qx-live-stat-content">
+          <b id="liveTotalBookings">0</b>
+          <span>Total Tokens</span>
+        </div>
+        <div class="qx-live-pulse"></div>
+      </div>
+    </div>
+
+    <div class="qx-grid qx-grid-4 qx-mb" id="statsRow"></div>
+
+    <div class="qx-ward-panel qx-mb" id="wardPanel">
+      <div class="qx-ward-panel-header">
+        <span style="font-weight:700;font-size:14px;">🛏️ Ward & Bed Occupancy</span>
+        <div id="wardPanelStats" class="qx-ward-panel-stats">
+          <span class="qx-ward-stat qx-ward-stat-green" id="asAvailBeds">Available: --</span>
+          <span class="qx-ward-stat qx-ward-stat-red" id="asOccupiedBeds">Occupied: --</span>
+          <span class="qx-ward-stat qx-ward-stat-yellow" id="asOccupancyRate">--%</span>
+        </div>
+      </div>
+      <div id="wardPanelCards" class="qx-ward-cards qx-ward-cards-sm"></div>
+    </div>
+
+    <div class="qx-panel qx-mb" id="analyticsPanel" style="display:none;">
+      <div class="qx-panel-head">
+        <h3 style="margin:0;">📊 Analytics Overview</h3>
+        <div class="qx-flex qx-wrap" style="gap:6px;">
+          <button class="qx-btn qx-btn-sm qx-btn-outline analytics-period active" data-period="monthly">Monthly</button>
+          <button class="qx-btn qx-btn-sm qx-btn-outline analytics-period" data-period="weekly">Weekly</button>
+        </div>
+      </div>
+      <div id="analyticsContent"></div>
+    </div>
+
+    <div class="qx-tabs qx-mb" id="filterTabs">
+      <button class="qx-tab active" data-tab="all">All Data</button>
+      <button class="qx-tab" data-tab="PENDING_ASSISTANT">Pending</button>
+      <button class="qx-tab" data-tab="CONFIRMED">Confirmed</button>
+      <button class="qx-tab" data-tab="PATIENT_ARRIVED">Arrived</button>
+      <button class="qx-tab" data-tab="IN_TREATMENT">In Treatment</button>
+      <button class="qx-tab" data-tab="COMPLETED">Completed</button>
+      <button class="qx-tab" data-tab="REJECTED">Rejected</button>
+      <button class="qx-tab" data-tab="walkin">🚶 Offline / Walk-in</button>
+      <button class="qx-tab" data-tab="emergencies">Confirmed Emergencies History</button>
+    </div>
+
+    <div id="tabContentQueue">
+      <div class="qx-panel qx-mb">
+        <div class="qx-panel-head">
+          <h3 style="margin:0;">Queue Board</h3>
+          <div class="qx-search" style="flex:0 1 300px;min-width:220px;">
+            <input type="search" id="asSearch" placeholder="Search patient / token / doctor...">
+          </div>
+        </div>
+        <div class="qx-table-wrap">
+          <table class="qx-table">
+            <thead>
+              <tr><th>Token</th><th>Patient</th><th>Doctor / Dept</th><th>Date &amp; Slot</th><th>Est. Wait</th><th>Distance</th><th>Symptom</th><th>Status</th><th>Actions</th></tr>
+            </thead>
+            <tbody id="queueTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="tabContentEmergencies" style="display:none;">
+      <div class="qx-panel qx-mb">
+        <div class="qx-panel-head">
+          <h3 style="margin:0;">Confirmed Emergencies History</h3>
+          <span class="qx-chip qx-chip-live"><span class="pulse-dot"></span> Live updates</span>
+        </div>
+        <div class="qx-table-wrap">
+          <table class="qx-table">
+            <thead>
+              <tr>
+                <th>Token</th>
+                <th>Patient</th>
+                <th>Severity</th>
+                <th>Address / Distance</th>
+                <th>Room</th>
+                <th>Ambulance</th>
+                <th>Instructions</th>
+                <th>Status</th>
+                <th>Confirmed At</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="confirmedEmergenciesTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="tabContentWalkin" style="display:none;">
+      <div class="qx-panel qx-mb">
+        <div class="qx-panel-head">
+          <h3 style="margin:0;">🚶 Offline / Walk-in Patients</h3>
+          <div class="qx-flex qx-wrap" style="gap:8px;">
+            <span class="qx-chip qx-chip-live"><span class="pulse-dot"></span> Live updates</span>
+          </div>
+        </div>
+        <div id="walkinHistoryList"></div>
+      </div>
+    </div>
+
+    <div class="qx-panel">
+      <div class="qx-panel-head">
+        <h3 style="margin:0;">Doctors &amp; Availability</h3>
+        <span class="qx-chip qx-chip-live"><span class="pulse-dot"></span> Live availability</span>
+      </div>
+      <div id="doctorsList" class="qx-grid qx-grid-3"></div>
+    </div>
+  </main>
+
+  <footer class="qx-footer">
+    <div class="qx-footer-grid container">
+      <div class="qx-footer-col qx-footer-brand">
+        <a class="qx-brand" href="index.html">
+          <span class="qx-brand-badge">🏥</span>
+          <span class="qx-brand-text">QueueX<small>New Civil Hospital, Surat</small></span>
+        </a>
+        <p>Prototype for public hospital digital queue management. Not an official government system.</p>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Quick Links</h5>
+        <a href="index.html">Home</a>
+        <a href="index.html#doctors">Our Doctors</a>
+        <a href="index.html#departments">Departments</a>
+        <a href="queue-display.html">Live Queue Display</a>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Staff Support</h5>
+        <a href="assistant-login.html">Staff Login</a>
+        <a href="login.html">Patient Portal</a>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Contact</h5>
+        <div>New Civil Hospital, Surat</div>
+        <div>Majura Gate, Ring Road, Surat, Gujarat</div>
+        <div>OPD: 09:00 AM – 05:00 PM</div>
+        <div>Emergency: 24 × 7</div>
+      </div>
+    </div>
+    <div class="qx-footer-bottom">
+      <div class="qx-footer-bottom-inner container">
+        <span>© 2026 QueueX · Prototype for public hospital digital queue management</span>
+        <span>⚠️ Not for emergencies — contact the hospital emergency desk immediately</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="qx-modal-backdrop" id="modalBackdrop">
+    <div class="qx-modal" id="modalBody"></div>
+  </div>
+
+  <script src="js/common.js"></script>
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/assistant-desk.js"></script>
+</body>
+</html>

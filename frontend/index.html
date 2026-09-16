@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QueueX - New Civil Hospital Surat | Digital Queue</title>
+  <meta name="description" content="QueueX is a prototype digital queue and appointment system for a public hospital workflow. Register and book tokens from home.">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="qx-topbar">
+    <div class="qx-topbar-inner">
+      <a class="qx-brand" href="index.html">
+        <span class="qx-brand-badge">🏥</span>
+        <span class="qx-brand-text">QueueX
+          <small>New Civil Hospital, Surat · Digital Queue</small>
+        </span>
+      </a>
+      <div class="spacer"></div>
+      <nav class="qx-nav">
+        <a href="#departments">Departments</a>
+        <a href="#doctors">Doctors</a>
+        <a href="#services">Services</a>
+        <a href="queue-display.html">Live Queue</a>
+      </nav>
+      <div class="qx-nav-actions">
+        <a href="login.html" class="qx-btn qx-btn-sm qx-btn-outline">Patient Login</a>
+        <a href="login.html#register" class="qx-btn qx-btn-sm qx-btn-success">Register</a>
+        <a href="assistant-login.html" class="qx-btn qx-btn-sm qx-btn-glass">Staff Login</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- HERO -->
+    <section class="qx-hero">
+      <div class="qx-hero-inner">
+        <div class="qx-hero-copy">
+          <div class="qx-chip-row">
+            <span class="qx-chip">🏥 Government-hospital-inspired workflow</span>
+            <span class="qx-chip qx-chip-live"><span class="pulse-dot"></span> Live Queue Active</span>
+          </div>
+          <h1>Smart hospital queues,<br><span class="grad">from the comfort of home.</span></h1>
+          <p>Register, request a token and track your position in the queue — all online. Visit the hospital only after your token is confirmed.</p>
+          <div class="qx-alert qx-alert-danger" role="alert">
+            <strong>⚠️ Emergency warning:</strong> This online token system is NOT for emergency treatment.
+            Please contact the hospital emergency department immediately.
+          </div>
+          <div class="qx-flex qx-wrap qx-mt">
+            <a class="qx-btn qx-btn-lg" href="login.html">Book Token</a>
+            <a class="qx-btn qx-btn-lg qx-btn-glass" href="#doctors">View Doctors</a>
+            <a class="qx-btn qx-btn-lg qx-btn-glass" href="#departments">View Departments</a>
+            <a class="qx-btn qx-btn-lg qx-btn-warning" href="queue-display.html">Live Queue Display</a>
+          </div>  
+        </div>
+
+        <div class="qx-hero-visual">
+          <div class="qx-mock3d">
+            <div class="qx-glow-ring"></div>
+            <div class="qx-mock-window">
+              <div class="qx-mock-bar">
+                <span class="qx-dot r"></span>
+                <span class="qx-dot y"></span>
+                <span class="qx-dot g"></span>
+                <span class="qx-mock-title">QueueX · Live Queue Monitor</span>
+              </div>
+              <div class="qx-mock-body">
+                <div class="qx-mock-serving">
+                  <div class="qx-mock-label">Now Serving</div>
+                  <div class="qx-mock-token">QX-3258</div>
+                </div>
+                <div class="qx-mock-row">
+                  <div class="qx-mock-cell">
+                    <div class="qx-mock-label">Next</div>
+                    <div class="qx-mock-next">QX-3259</div>
+                  </div>
+                  <div class="qx-mock-cell">
+                    <div class="qx-mock-label">Est. Wait</div>
+                    <div class="qx-mock-wait">25 min</div>
+                  </div>
+                </div>
+                <div class="qx-mock-chart">
+                  <span style="height:34%"></span><span style="height:52%"></span>
+                  <span style="height:40%"></span><span style="height:68%"></span>
+                  <span style="height:56%"></span><span style="height:82%"></span>
+                  <span style="height:62%"></span><span style="height:44%"></span>
+                </div>
+                <div class="qx-mock-stats">
+                  <div class="qx-mock-stat"><b>12</b><span>Waiting</span></div>
+                  <div class="qx-mock-stat"><b>6</b><span>Doctors</span></div>
+                  <div class="qx-mock-stat"><b>38</b><span>Completed</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="qx-float qx-float-1"><span class="tick">✔</span> Token Confirmed</div>
+            <div class="qx-float qx-float-2"><span class="clock-ico">⏱</span> Est. wait 25 min</div>
+            <div class="qx-float qx-float-3"><span class="bell-ico">🔔</span> Turn Approaching</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- OPD INFO -->
+    <section id="opd-info" class="qx-panel qx-mb">
+      <div class="qx-flex qx-wrap" style="justify-content:space-between;">
+        <h3 style="margin:0;">OPD Timings &amp; Information</h3>
+        <div id="serverStatus" class="est-banner" style="margin:0;">Checking server status...</div>
+      </div>
+      <p class="qx-muted" style="margin-top:12px;">Outpatient Department (OPD) is open from <strong>09:00 AM</strong> to <strong>05:00 PM</strong> (Monday to Saturday).</p>
+      <p class="qx-muted">Emergency department operates 24 hours. For emergencies, do not use this portal - call the emergency desk or visit the hospital immediately.</p>
+    </section>
+
+    <!-- DEPARTMENTS -->
+    <section id="departments" class="qx-section">
+      <div class="qx-section-head">
+        <div>
+          <h2>Departments</h2>
+          <p class="qx-section-sub">Specialized OPD departments with live schedules.</p>
+        </div>
+      </div>
+      <div id="departmentsList" class="qx-grid qx-grid-3"></div>
+    </section>
+
+    <!-- DOCTORS / MEDICAL EXPERTS -->
+    <section id="doctors" class="qx-section">
+      <div class="qx-section-head">
+        <div>
+          <h2>Our Medical Experts</h2>
+          <p class="qx-section-sub">Meet the specialists, check live availability and book a consultation.</p>
+        </div>
+        <div class="qx-search" style="flex:0 1 320px;min-width:240px;">
+          <input type="search" id="doctorSearch" placeholder="Search doctor, department or specialty...">
+        </div>
+      </div>
+      <div id="doctorsList" class="qx-grid qx-grid-3"></div>
+    </section>
+
+    <!-- SERVICES -->
+    <section id="services" class="qx-section">
+      <div class="qx-section-head">
+        <div>
+          <h2>Hospital Services</h2>
+          <p class="qx-section-sub">Round-the-clock services available at the hospital.</p>
+        </div>
+      </div>
+      <div class="qx-grid qx-grid-4">
+        <div class="qx-stat"><div class="ico">🚑</div><div class="num">24x7</div><div class="lbl">Emergency</div></div>
+        <div class="qx-stat"><div class="ico">🩺</div><div class="num">OPD</div><div class="lbl">Outpatient Dept.</div></div>
+        <div class="qx-stat"><div class="ico">🧪</div><div class="num">Lab</div><div class="lbl">Laboratory</div></div>
+        <div class="qx-stat"><div class="ico">🩻</div><div class="num">X-Ray</div><div class="lbl">Radiology</div></div>
+        <div class="qx-stat"><div class="ico">💊</div><div class="num">24x7</div><div class="lbl">Pharmacy</div></div>
+        <div class="qx-stat"><div class="ico">🩸</div><div class="num">Bank</div><div class="lbl">Blood Bank</div></div>
+        <div class="qx-stat"><div class="ico">📋</div><div class="num">Desk</div><div class="lbl">Registration</div></div>
+        <div class="qx-stat"><div class="ico">❓</div><div class="num">Help</div><div class="lbl">Help Desk</div></div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="qx-panel qx-mb">
+      <h3>Contact &amp; Address</h3>
+      <p><strong>New Civil Hospital, Surat</strong><br>
+        Majura Gate, Ring Road, Surat, Gujarat (prototype reference - verify with hospital).</p>
+      <p class="qx-muted">Working hours: 09:00 AM - 05:00 PM | Emergency: 24 hours</p>
+      <div class="qx-flex qx-wrap qx-mt">
+        <span class="qx-chip">📞 Emergency: 24 × 7</span>
+        <span class="qx-chip">🕘 OPD: Mon – Sat</span>
+        <span class="qx-chip">📍 Majura Gate, Surat</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="qx-footer">
+    <div class="qx-footer-grid container">
+      <div class="qx-footer-col qx-footer-brand">
+        <a class="qx-brand" href="index.html">
+          <span class="qx-brand-badge">🏥</span>
+          <span class="qx-brand-text">QueueX<small>New Civil Hospital, Surat</small></span>
+        </a>
+        <p>Prototype for public hospital digital queue management. Not an official government system.</p>
+        <span class="qx-chip qx-chip-live"><span class="pulse-dot"></span> System online</span>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Quick Links</h5>
+        <a href="index.html">Home</a>
+        <a href="#departments">Departments</a>
+        <a href="#doctors">Our Doctors</a>
+        <a href="queue-display.html">Live Queue Display</a>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Patient Support</h5>
+        <a href="login.html">Patient Login</a>
+        <a href="login.html#register">New Registration</a>
+        <a href="assistant-login.html">Staff Portal</a>
+        <a href="login.html#register">Forgot Password</a>
+      </div>
+      <div class="qx-footer-col">
+        <h5>Contact</h5>
+        <div>New Civil Hospital, Surat</div>
+        <div>Majura Gate, Ring Road, Surat, Gujarat</div>
+        <div>OPD: 09:00 AM – 05:00 PM</div>
+        <div>Emergency: 24 × 7</div>
+      </div>
+    </div>
+    <div class="qx-footer-bottom">
+      <div class="qx-footer-bottom-inner container">
+        <span>© 2026 QueueX · Prototype for public hospital digital queue management</span>
+        <span>⚠️ Not for emergencies — contact the hospital emergency desk immediately</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>
