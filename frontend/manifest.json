@@ -9,7 +9,7 @@
   "description": "Smart hospital queue management application featuring real-time tracking.",
   "icons": [
     {
-      "src": "/img/queue_logo.png",
+      "src": "./img/queue_logo.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
