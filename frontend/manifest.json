@@ -2,19 +2,17 @@
   "name": "QueueX Smart Hospital",
   "short_name": "QueueX",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0052cc",
+  "description": "Smart hospital queue management application featuring real-time tracking.",
   "icons": [
     {
-      "src": "./img/queue_logo.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "./img/queue_logo.png",
+      "src": "/img/queue_logo.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
