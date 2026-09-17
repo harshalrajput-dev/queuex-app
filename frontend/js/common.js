@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5000/api";
+const API_BASE = "https://queuex-backend-pbi5.onrender.com/api";
 let currentUser = null;
 
 function getToken() {
