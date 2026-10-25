@@ -6,7 +6,6 @@ const { ok, fail } = require("../utils/response");
 const ah = require("../utils/asyncHandler");
 const logger = require("../services/logger");
 
-
 const sanitizeUser = (user) => user.toSafeJSON();
 
 exports.register = ah(async (req, res) => {

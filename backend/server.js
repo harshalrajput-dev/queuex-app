@@ -88,7 +88,7 @@ app.use("/api/emergency", emergencyRoutes);
 app.use("/api/assistant", assistantRoutes);
 app.use("/api/wards", wardRoutes);
 
-app.use(express.static(path.join(__dirname, "..", "frontend")));
+app.use(express.static(path.join(__dirname, "..", "frontend-react", "dist")));
 
 app.use(notFoundHandler);
 app.use(errorHandler);

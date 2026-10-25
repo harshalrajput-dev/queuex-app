@@ -1,0 +1,53 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#eef4ff"/>
+      <stop offset="1" stop-color="#d2e2ff"/>
+    </linearGradient>
+    <linearGradient id="coatGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e6edfa"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" fill="url(#bgGrad)"/>
+
+  <!-- shoulders / white lab coat -->
+  <path d="M28 132 C28 96 42 84 64 84 C86 84 100 96 100 132 Z" fill="url(#coatGrad)" stroke="#c9d6ee" stroke-width="1.5"/>
+
+  <!-- coat collar / lapels -->
+  <path d="M64 86 L56 96 L64 104 L72 96 Z" fill="#ffffff" stroke="#c9d6ee" stroke-width="1"/>
+  <path d="M56 96 L46 92 L54 106 Z" fill="#f4f8ff" stroke="#c9d6ee" stroke-width="0.8"/>
+  <path d="M72 96 L82 92 L74 106 Z" fill="#f4f8ff" stroke="#c9d6ee" stroke-width="0.8"/>
+
+  <!-- shirt + tie -->
+  <path d="M58 90 L64 97 L70 90 Z" fill="#eef2f8"/>
+  <path d="M60 92 L64 98 L68 92 L64 104 Z" fill="#2563eb"/>
+
+  <!-- stethoscope chest piece -->
+  <circle cx="64" cy="116" r="6" fill="#dc2626"/>
+  <circle cx="64" cy="116" r="2.6" fill="#ffffff"/>
+
+  <!-- neck -->
+  <rect x="58" y="64" width="12" height="11" rx="5" fill="#e2b384"/>
+
+  <!-- ears -->
+  <circle cx="41" cy="50" r="4.5" fill="#d9a878"/>
+  <circle cx="87" cy="50" r="4.5" fill="#d9a878"/>
+
+  <!-- head -->
+  <circle cx="64" cy="46" r="21" fill="#e8b98a"/>
+
+  <!-- hair -->
+  <path d="M43 45 A21 21 0 0 1 85 45 C85 51 81 54 76 54 C74 49 69 47 64 47 C59 47 54 49 52 54 C47 54 43 51 43 45 Z" fill="#334155"/>
+
+  <!-- brows -->
+  <path d="M54 40 Q58 38 62 40" stroke="#5b4a3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path d="M66 40 Q70 38 74 40" stroke="#5b4a3a" stroke-width="2" fill="none" stroke-linecap="round"/>
+
+  <!-- eyes -->
+  <circle cx="57" cy="45" r="2.2" fill="#1e293b"/>
+  <circle cx="71" cy="45" r="2.2" fill="#1e293b"/>
+
+  <!-- smile -->
+  <path d="M58 54 Q64 58 70 54" stroke="#b07a4e" stroke-width="2" fill="none" stroke-linecap="round"/>
+</svg>
